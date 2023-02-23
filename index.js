@@ -8,6 +8,10 @@ require('dotenv').config()
 app.use(cors());
 app.use(express.json());
 
+//mongoDB user and password
+// console.log(process.env.DB_USER)
+// console.log(process.env.DB_Password)
+
 
 //get
 app.get('/', (req, res) => {
