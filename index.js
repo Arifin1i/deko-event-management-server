@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
     res.send('deko will be so richhhhhhhhhhhhh')
 })
 
-
+app.get('/', )
 //listen
 app.listen(port, () => {
     console.log(`deko earning mon-ney at ${5000}`)
