@@ -18,6 +18,20 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 console.log(uri)
 
+//read from find a document
+async function run() {
+    try {
+        const lawServices = client.db('myServices').collection('serviceList')
+        const postCollection = client.db('myServices').collection('comments')
+        
+
+        app.get('/serviceList', async (req, res) => {
+            const query = { };
+            const cursor = await lawServices.find(query);
+            const serviceList = await cursor.toArray()            //toArray
+            res.send(serviceList)
+        })
+
 
 //get
 app.get('/', (req, res) => {
