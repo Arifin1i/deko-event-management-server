@@ -1,8 +1,11 @@
+
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
 require('dotenv').config()
+const objectID = require('mongodb').ObjectId
 
 //middle wares
 app.use(cors());
@@ -23,29 +26,52 @@ async function run() {
     try {
         const lawServices = client.db('myServices').collection('serviceList')
         const postCollection = client.db('myServices').collection('comments')
-
+        
 
         app.get('/serviceList', async (req, res) => {
-            const query = {};
+            const query = { };
             const cursor = await lawServices.find(query);
             const serviceList = await cursor.toArray()            //toArray
             res.send(serviceList)
         })
-        app.get('/serviceList/:id', async (req, res) => {
+
+        app.get('/serviceList/:id', async(req,res)=>{
             const id = req.params.id;
-            const query = { _id: objectID(id) };
-            const service = await lawServices.findOne(query)
+            const query = {_id: objectID(id)  };
+            const service = await lawServices.findOne (query)
             res.send(service)
         })
 
-        //get
-        app.get('/', (req, res) => {
-            res.send('deko will be so richhhhhhhhhhhhh')
+        app.post('/review', async(req, res)=>{
+           const post = req.body;
+           const result = await postCollection.insertOne(post)
+           res.send(result)
         })
 
-        app.get('/',)
-        //listen
-        app.listen(port, () => {
-            console.log(`deko earning mon-ney at ${5000}`)
+        app.get('/review', async (req, res) => {
+            const query = { };
+            const cursor = await postCollection.find(query);
+            const postList = await cursor.toArray()            //toArray
+            res.send(postList)
         })
+
+       
+
+    } finally {
+    }
+}
+run().catch(err => console.error())
+
+
+
+//get
+app.get('/', (req, res) => {
+    res.send('deko will be so richhhhhhhhhhhhh')
+})
+
+
+//listen
+app.listen(port, () => {
+    console.log(`deko earning mon-ney at ${5000}`)
+})
 
